@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteproductController = exports.setproductimagesController = exports.addProductController = void 0;
+exports.getbiddingController = exports.deleteproductController = exports.setproductimagesController = exports.addProductController = void 0;
 const product_service_1 = require("../../services/categoriesService/product.service");
+const product_model_1 = require("../../models/product.model");
 const addProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield (0, product_service_1.addProduct)(req);
@@ -50,4 +51,24 @@ const deleteproductController = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.deleteproductController = deleteproductController;
+const getbiddingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const product = yield product_model_1.Product.findByPk(req.params.pid);
+        if (!product) {
+            res.status(404).json({ message: 'Product not found' });
+        }
+        else {
+            const result = yield (0, product_service_1.getbidding)(req, res);
+            // if(!result){
+            //     res.status(400).json({msg:"Something went Wrong"});
+            // }
+            res.status(200).json(result);
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+exports.getbiddingController = getbiddingController;
 //# sourceMappingURL=product.controller.js.map

@@ -12,5 +12,6 @@ productRoute.route('/').get();
 productRoute.route('/addproducts').post(auth_1.authenticateToken, product_controller_1.addProductController);
 productRoute.route('/addimages/:pid').post(auth_1.authenticateToken, multer_fileupload_1.upload.array('images', 5), product_controller_1.setproductimagesController);
 productRoute.route('/deleteproduct/:id').get(auth_1.authenticateToken, product_controller_1.deleteproductController);
+productRoute.route('/raisedbidding/:pid').post(auth_1.authenticateToken, product_controller_1.getbiddingController);
 exports.default = productRoute;
 //# sourceMappingURL=product.route.js.map

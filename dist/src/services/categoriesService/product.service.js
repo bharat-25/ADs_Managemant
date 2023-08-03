@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteproduct = exports.addimages = exports.addProduct = void 0;
+exports.getbidding = exports.deleteproduct = exports.addimages = exports.addProduct = void 0;
 const product_model_1 = require("../../models/product.model");
 const { Op } = require("sequelize");
 const fs_1 = __importDefault(require("fs"));
@@ -69,4 +69,24 @@ const deleteproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteproduct = deleteproduct;
+const getbidding = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const pid = req.params.pid;
+        const currentBid = req.body.currentBid;
+        let product = yield product_model_1.Product.findOne({ where: { id: pid } });
+        console.log(product);
+        if (product.heigher_bidding_price < currentBid) {
+            product = product_model_1.Product.update({ heigher_bidding_price: currentBid, Bidderid: req.user.user_id }, { where: { id: pid } });
+        }
+        else {
+            res.status(402).json({ message: "New Bid price is higher than the current bidding price" });
+        }
+        res.status(201).json("bid updated");
+    }
+    catch (error) {
+        res.status(500).json({ message: "Server Error" });
+        console.log(error);
+    }
+});
+exports.getbidding = getbidding;
 //# sourceMappingURL=product.service.js.map
